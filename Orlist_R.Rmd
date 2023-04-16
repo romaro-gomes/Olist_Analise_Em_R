@@ -1,0 +1,541 @@
+---
+title: " Olist: O que os dados nos contam?"
+author: "Romario"
+date: "`r Sys.Date()`"
+output: html_document
+
+---
+
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+   warning=FALSE, message=FALSE, tidy=TRUE,	tidy.opts=list(arrow=TRUE,	indent=2),fig.width = 10, fig.align = 'center', fig.asp=0.618, out.width = '100%')
+```
+
+# Introdução
+
+Sou uma pessoa antiquada. Apesar de consumir muitos produtos audiovisuais por streaming, como Youtube e Netflix, nunca fui muito chegado  a redes sociais ou compras online. As compras, como única exceção é a de jogos.  Mas é porque não tenho um console e as versões digitais para PC são geralmente mais baratas.
+
+Infelizmente, ou felizmente, devido a pandemia e a diferença de preços em relação às [lojas físicas](https://economia.ig.com.br/2020-11-25/black-friday-diferenca-entre-precos-de-lojas-online-e-fisicas-chega-a-32.html), tive que me aventurar a fazer compras online. As experiências não foram ruins, tirando uma vez na qual achei que tinham entregado o meu notebook no lugar errado. Mas foi uma leve surtada minha.
+
+A facilidade na hora de pagar, não ter que esperar fila e a velocidade no atendimento, mesmo a distância,  não venceram completamente, mas me deixaram mais aberto e menos desconfiado aos e-commerce.
+
+Bem, essas lojas virtuais, ou [e-commerce](https://ecommerce-platforms.com/pt/glossary/ecommerce), são bastante populares no Brasil. Ele aumentou [cerca de  27%](https://www.suno.com.br/noticias/e-commerce-fatura-recorde-2021-projecoes-2022/) nos últimos anos, não só porque agora, muita gente tem celular e acesso a internet. Mas porque há muitas opções de onde alguém pode divulgar e por seus produtos à venda 
+
+Por exemplo, o [Instagram](https://rockcontent.com/br/blog/instagram-para-ecommerce/). Mesmo não o usando muito,  sei que vários usuários unem a paixão por postar fotos e ver a vida alheia, com o empreendedorismo, indo muito além de publicações. Lá as pessoas , postam fotos, reels e stories de seus produtos usando todas as manhãs possíveis de marketing digital para convencer alguém a abrir a carteira. Eu acho lindo.
+
+Não só o Insta, mais o Facebook, já havia os grupos focados em comércio, desde encomenda de bonequinhos de anime à os famosos [joga pra rolo](https://entretenimento.r7.com/humor/fotos/joga-pra-rolo-o-brasileiro-e-capaz-de-negociar-qualquer-coisa-26082019#/foto/5), tipo um sebo para coisas usadas.
+
+Talvez  pelo aumento do número de negociações iniciadas dentro da plataforma, o Facebook tenha decidido criar o seu próprio [marketplace](https://pt-br.facebook.com/marketplace/learn-more/). Assim, centralizada, tornando mais fácil e rápido comprar ou vender coisas na rede social.
+
+Mas o que é um [marketplace](https://www.ecommercebrasil.com.br/artigos/marketplace-vantagens-e-desvantagens/)? Eu faria uma analogia com as ferinhas, comum no subúrbio do Rio.
+Neste lugar um pequeno empreendedor, monta a sua barraquinha e vende alguma coisa. Simples.
+
+É basicamente isso que sites como Mercado-Livre, Shoppe, Submarino fazem. Eles montam um feirinha na internet. Nela, eles regulam pode ou não vender, as condições, além de lidar com toda a parte de entrega e pagamento.
+
+Os marketplaces são excelentes tanto para o vendedor quanto para o cliente, pois tem a segurança de estarem sobre a proteção de uma empresa maior,     que irá protegê-los de qualquer tipo de inconveniente.... Pelo menos os previstos em contrato.
+
+Foi mais ou menos dessa forma que surgiu a [Olist](https://olist.com/pt-br/). Foi fundado por `Tiago Dalvi`  em Santa Catarina, com o nome de Solidarium , com o intuito de ajudar artesãos locais a aumentar suas vendas. Devido ao sucesso, a empresa cresceu em www e agora de marketplace, ela se tornou um [store in store](https://www.suno.com.br/artigos/store-in-store/).
+
+Eu também não sabia que isso existia. Na real, quando eu comecei a pesquisa para esse texto eu não entendia bem o que a Olist era. Ela não é uma loja virtaul, nem um marketplace, até porque ela tem acordo com marketplaces. Então fui ao lugar mais óbvio, o [sobre mim](https://olist.com/pt-br/sobre-nos/) da empresa.
+
+Voltado... O store in store, são lojas que ficam tendo lojas. Ou seja, o Olist é uma grande loja, que tem pequenas lojas dentro. Podemos usar supermercados como analogia. 
+
+Pelos menos aqui no Rio, nós temos um supermercado muito famoso chamado Guanabara, aquele dos [aniversários](https://economia.uol.com.br/noticias/estadao-conteudo/2021/10/22/supermercado-guanabara-faz-aniversario-e-fica-sem-razao-para-celebrar.htm). E nele há várias [lojas ou serviços](https://www.gironews.com/supermercado/guanabara-aumenta-fluxo-apos-parceria-com-grandes-redes-27155/), dentro do prédio do supermercado. Eu não entendo qual é o acordo entre eles, mas acredito que essas lojas paguem ao Guanabara para usar aquele espaço. Ou seja, a empresa ganha com o seu supermercado, mas o aluguel dessas lojas menores, que certamente lucram por estarem no caminho de um baita supermercado.
+
+A Olist é a mesma coisa. Pequenas empresas usam o espaço da loja maior que é a Olist, para divulgarem o seu produto, em troca de todo o apoio que ela fornece. E a Orlistat faz acordo com marketplaces, para divulgar os produtos das suas empresas colaboradoras.
+
+Em outras palavras, é um sonho, dentro do sonho, dentro do sonho.
+
+A Olist vem se tornando uma das maiores empresas no ramo de e-commerce da América Latina. E ela gentilmente, disponibilizou parte dos seus dados na plataforma [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).
+
+Eu utilizarei parte desses dados para fazer algumas análises em R e talvez termos alguns insights.
+
+# Bibliotecas Utilizadas
+
+O R e a Rstudio nos fornecem várias bibliotecas/pacotes que facilitam a análise de dados.
+
+Acho uma boa prática colocar eles no topo do documento para facilitar quem quiser reproduzir o código.
+
+```{r pacotes}
+# Controle no fluxo de arquivos
+library(here) 
+
+# Principal conjunto de pacotes para análise de dados
+library(tidyverse)
+
+# Pacotes fora para manipulação de dados fora do tidyverse
+library(lubridate)
+library(forcats)
+library(janitor)
+library(arules)
+
+# Visualização de Gráficos
+library(RColorBrewer)
+library(treemap)
+library(viridis)
+
+# Visualização de Mapas
+library(geobr)
+
+# Tabelas bonitas
+library(knitr)
+library(kableExtra)
+library(gt)
+```
+
+# Importação dos dados
+
+Os dados utilizados estão na plataforma de dados públicos Kaggle, fornecidos pela própria Olist.
+
+```{r importando dados, results='hide'}
+here::here()
+
+categoria=read_csv(here::here('data','raw_data','product_category_name_translation.csv'))
+sellers=read_csv(here::here('data','raw_data','olist_sellers_dataset.csv'))
+produtos=read_csv(here::here('data','raw_data',"olist_products_dataset.csv"))
+clientes=read_csv(here::here('data','raw_data',"olist_customers_dataset.csv"))
+revisoes=read_csv(here::here('data','raw_data',"olist_order_reviews_dataset.csv"))
+geo=read_csv(here::here('data','raw_data',"olist_geolocation_dataset.csv"))
+item=read_csv(here::here('data','raw_data',"olist_order_items_dataset.csv"))
+compras=read_csv(here::here('data','raw_data',"olist_orders_dataset.csv"))
+pagamentos=read_csv(here::here('data','raw_data',"olist_order_payments_dataset.csv"))
+```
+
+# Há dados faltando?
+
+Sim. Há muitas dados faltantes, mas são por alguns motivos relaciaonados a cancelamento de pedidos, não escrever alguma crítica ou algo do tipo.
+
+```{r dados faltantes, results='hold'}
+sum(is.na(categoria))
+sum(is.na(clientes))
+sum(is.na(compras))
+sum(is.na(geo))
+sum(is.na(item))
+sum(is.na(pagamentos))
+sum(is.na(produtos))
+sum(is.na(revisoes))
+sum(is.na(sellers))
+```
+
+# Estado do Rio!
+
+Bem, vamos os dados fornecidos sobre a Orlist são enormes e com várias linhas. Então para começar essa análise vamos começar pela cidade do Rio e depois ver a situação no país todo.
+
+O primeiro passo é restringir os clientes para somentes para os do estado do Rio de Janeiro
+
+```{r clientes do RJ}
+clientes_rj = clientes %>%
+	rename(cidade=customer_city,estado = customer_state,cep=customer_zip_code_prefix)  %>% 
+	filter(estado=='RJ')
+
+```
+
+## Gráficos e Tablelas
+
+### Prestando contas
+
+Uma olha ns dados nos permite ver que certos municípios estão com escritas diferentes. Isso afeta a os valores reais dos dados.
+
+Uma solução seria a empresa restringir os nomes que podem ser usados na hora deste preenchimento destas colunas. Isso é possiveis em programas de planilhas, seja excel ou google sheets
+
+### Municípios com maior número de compras
+
+```{r }
+clientes_rj %>% 
+	group_by(cidade,) %>%
+	summarise(N=n()) %>%
+	arrange(desc(N)) %>%
+	head(10) %>%
+	ggplot(aes(x = reorder(cidade, N),y=N))+
+	geom_col(fill='darkblue') +
+	labs(title='Os 10 Município Com Mais Pedidos',x=NULL, y='Número de Pedidos', size=10,face= "bold.italic") +
+	theme_bw() +
+	theme(
+		plot.title=element_text(family='serif', face='bold', colour='black', size=26),
+		axis.title.x= element_text(family='serif', face='bold', colour='black', size=15),
+		axis.text.y = element_text(family='serif', face='bold', colour='black', size=15),
+		axis.text.x= element_text(family='serif', face='bold', colour='black', size= 12)
+	) +
+	scale_y_continuous(n.breaks = 7) +
+	coord_flip() 
+```
+
+Como era de se esperar o Município do Rio de Janeiro, onde fica a capital do Estado, foi o que mais possui o maior número de compras, muito a frente de Niteroi, o que é uma surpresa
+
+
+### Porcentagem de entregas
+
+Dado esse grande número de compras, quantos foram realmente entregues aos clientes?
+
+```{r}
+#Porcentagem de entregas
+
+compras_rj=compras %>%
+	filter(customer_id %in% clientes_rj$customer_id)
+
+entrega=as.data.frame(table(compras_rj$order_status)) %>% 
+	filter(Var1=='delivered') %>%
+	.$Freq
+
+
+outros=as.data.frame(table(compras_rj$order_status)) %>%
+	filter(Var1 != 'delivered') %>%
+	summarise(sum(Freq)) %>%
+	.[[1]]
+
+prop_entrega= table(compras_rj$order_status) %>% prop.table( ) *100
+
+prop_outros=prop_entrega[c("canceled","created","invoiced","processing","shipped","unavailable")]
+
+prop_outros=sum(prop_outros)
+prop_entrega=prop_entrega['delivered']
+
+pie(x=c(entrega,outros),col = brewer.pal(n = 3, name = "Spectral"),
+	labels = c(paste0(round(prop_entrega),' %'),paste0(round(prop_outros),' %'))) 
+legend('topleft',legend=c('Entregue','Não Entregue'),fill = brewer.pal(n = 3, name = "Spectral"))
+```
+
+### Tudo no prazo?
+
+Agora que sabemos que grande parte dos pedidos de compra são entregues, será que o todos chegam no prazo correto, ou há alguns imprevistos?
+
+```{r}
+tempo_de_entrega= compras_rj %>% 
+	transmute(customer_id,tempo_entrega= compras_rj$order_delivered_customer_date-compras_rj$order_approved_at,
+		tempo_estimado=compras_rj$order_estimated_delivery_date-compras_rj$order_approved_at,
+		diferença=as.integer((tempo_estimado-tempo_entrega)/24),
+		tipo=ifelse(diferença>=0,'OK','Atrasado')) %>%
+	drop_na() %>%
+	mutate(media=mean(diferença), sd=sd(diferença), mediana=median(diferença))
+
+entrega_tabela=table(tempo_de_entrega$tipo)
+entrega_tabela_prop=prop.table(table(tempo_de_entrega$tipo)) * 100
+
+pie(c(entrega_tabela[2],entrega_tabela[1]), col = brewer.pal(n = 3, name = "Spectral"),
+		labels = c(paste0(round(entrega_tabela_prop[[2]]),' %'),paste0(round(entrega_tabela_prop[[1]]),' %')))
+legend('topleft',legend=c(names(entrega_tabela_prop)[2],names(entrega_tabela_prop)[1]),fill = brewer.pal(n = 3, name = 'Spectral' ))
+
+```
+
+### Quais municípios tiveram maior número de atraso?
+
+```{r }
+tempo_de_entrega %>% filter(tipo == 'Atrasado') %>%
+	left_join(clientes_rj) %>%
+	group_by(cidade) %>%
+	summarise(N=n()) %>%
+	arrange(desc(N)) %>%
+	head(10) %>%
+	ggplot(aes(x = reorder(cidade, -N),y=N))+
+	geom_col(fill='red') +
+	ggtitle('Os 10 municípios com mais atrasos') +
+	labs(y='Número de Atrasos',x=NULL) +
+	theme_bw() +
+	theme(
+		plot.title=element_text(family='serif', face='bold', colour='black', size=26),
+		axis.text.x= element_text(family='serif', face='bold', colour='black', size= 12),
+		axis.text.y = element_text(family='serif', face='bold', colour='black', size=10),
+		axis.title.x = element_text(family='serif', face='bold', colour='black', size=15)
+	) +
+	scale_y_continuous(n.breaks = 7) +
+	coord_flip()
+```
+
+
+## A empresa cresceu no Rio?
+
+Vamos analizar se a empresa tem crescido o número de pedidos aqui no Estado no Rio, pelo menos no período fornecidos pelos dados.
+
+```{r}
+pedidos=compras_rj %>% select(customer_id,order_purchase_timestamp) %>%
+	mutate(dia_da_semana=lubridate::wday(order_purchase_timestamp,label = T),
+		dia=lubridate::day(order_purchase_timestamp),
+		mes=lubridate::month(order_purchase_timestamp,label = T),
+		ano=lubridate::year(order_purchase_timestamp))
+
+pedidos %>% group_by(ano,mes) %>% summarise(numero=n()) %>%
+	ggplot(aes(x=mes,y=numero)) +
+	geom_col() +
+	labs(x=NULL, y='Número de Pedidos') +
+	facet_wrap(~ano)
+
+
+```
+
+Considerando que é só uma parcela dos dos dados, eu chutaria que a black friday de 2017 fui muiti boa para a empresa.
+
+
+### O dia da semana interfere?
+
+```{r}
+pedidos %>% group_by(ano,mes,dia_da_semana) %>%
+	summarise(numero=n()) %>%
+	ggplot(aes(x=dia_da_semana, y=numero,fill=dia_da_semana)) +
+	labs(x='Dias da Semana', y='Número de Pedidos')+
+	geom_boxplot() +
+	scale_fill_viridis(discrete = TRUE, alpha=0.6,option='H') +
+	facet_wrap(~ano)
+```
+
+### O numero de pedidos varia muito dentro do mes?
+
+```{r}
+pedidos %>% group_by(ano,dia,mes) %>% summarise(numero=n())%>%
+	ggplot(aes(x=mes, y=numero, fill=mes)) +
+	geom_boxplot() +
+	labs(x=NULL, y='Número de Pedidos')+
+	scale_fill_viridis(discrete=T,option='E',begin=0.4) +
+	facet_wrap(~ano)  +
+	theme(
+		axis.title.y = element_text(family='serif', face='bold', colour='black', size=15)
+	) +
+	scale_y_continuous(n.breaks = 7) 
+	
+```
+ 
+
+####  A Black Friday afetou Novembro/2017?
+
+```{r}
+pedidos %>% group_by(ano,dia,mes) %>% summarise(numero=n())%>%
+	filter(ano=='2017',mes=='nov') %>%
+	ggplot(aes(x=dia, y=numero)) +
+	geom_line() +
+	scale_x_continuous(breaks=seq(1,30,by=1))+
+	labs(y='Pedidos', x=NULL) +
+	theme_light()
+	
+```
+Observando o aumento no dia 24, eu chutaria que sim. Até bate com o outiler do gráficos de pedidos por mês.
+
+
+## Como ela está sendo avaliada?
+
+Não basta ter muitos pedidos, temos que analisar se os clientes cariocas e fluminenses estão aprovando a empresa.
+
+Veremos isso contando as notas dadas pelos usuários, pelo menos os que deram notas.
+
+```{r}
+avaliar=left_join(compras_rj,revisoes)
+
+avaliar %>%
+	drop_na(review_score) %>% 
+	mutate(Media=round(mean(review_score),2), Mediana=median(review_score),Maxima=max(review_score)) %>%
+	select(Media,Mediana,Maxima) %>%
+	unique() %>%
+	gt() %>%
+	tab_header(
+		title = 'Resumo das Notas'
+	)
+```
+
+Quase quatro de Media não me parece tão ruim. O que a empresa queria nesse periodo?
+
+Como ela se saiu individualmente em cada ano?
+
+```{r}
+avaliar %>%
+	drop_na(review_score) %>% 
+	mutate(Ano=lubridate::year(order_purchase_timestamp)) %>%
+	group_by(Ano) %>%
+	summarise(Media=round(mean(review_score),2),
+				 Mediana=median(review_score),
+				 Maxima=max(review_score),
+				 N.Avaliações=n()) %>% 
+	gt() %>%
+	tab_header(
+	title = 'Resumo das Notas'	)
+	
+```
+Nota-se que mesmo os dados de 2018  não serem do ano inteiro, o número de avaliações aumentou e contiua com uma média próxima ao 4.
+
+## Onde estão os vendedores?
+
+A Olist é uma empresa que fornece abertura para vendedores do mundo inteiro.
+
+Qual é a origem dos principais vendedores para o municípo do Rio.
+
+```{r}
+vendas_rj= item %>% 
+	filter(order_id %in% compras_rj$order_id) %>%
+	left_join(sellers) %>%
+	left_join(produtos)
+
+vendedores_avaliar_rj=left_join(avaliar,vendas_rj)
+
+vendedores_avaliar_rj %>%
+	group_by(seller_state) %>%
+	summarise(n=n()) %>% 
+	ggplot(aes(x=reorder(seller_state,-n),y=n)) +
+	geom_col(fill='blue') +
+	labs(y='Número de Vendedores',
+			 x='UF',
+			 title='Origem dos vendedores') +
+	theme_bw() +
+	theme(
+		plot.title=element_text(family='serif', face='bold', colour='black', size=26),
+		axis.text.x= element_text(family='serif', face='bold', colour='black', size= 10),
+		axis.text.y = element_text(family='serif', face='bold', colour='black', size=10),
+		axis.title.x = element_text(family='serif', face='bold', colour='black', size=15)
+	) +
+	scale_y_continuous(n.breaks = 10) 									
+```
+
+Olha só! Os paulsitanos devem ganhar uma fortuna vendendo para  o Rio de Janeiro.
+
+E qual será a forma de pagamento mais comuns entre os cariocas?
+
+```{r}
+pagamentos_rj = left_join(vendas_rj,pagamentos)
+pagamentos_rj$payment_type=recode_factor(pagamentos_rj$payment_type, credit_card = 'credito',debit_card = 'debito')
+
+pagamento_rj_real=pagamentos_rj %>% select("price","freight_value","payment_value","payment_type","seller_state")
+
+table(pagamento_rj_real$payment_type) %>% as.data.frame() %>% treemap('Var1','Freq', title='Métodos de Pagamento',fontfamily.title = "serif",fontsize.title=24)
+
+```
+
+
+## O que os cariocas mais compram?
+```{r}
+table(vendas_rj$product_category_name) %>%
+	as.data.frame()  %>%
+	treemap('Var1','Freq', palette='Spectral',title = "As categorias mais vendidas", fontfamily.title = "serif",fontsize.title=24)
+```
+
+## Quanto custa para chegar?
+
+Bem, sabemos que há uma diferença entre o preço de algo e quanto o cliente paga para tê-lo. Isto fica bem obvio neste banco de dados, pois eles separam pagamento,preço e valor do frete. E será que muda dependendo de onde é o vendedor?
+
+```{r}
+frete_rj=pagamento_rj_real %>% group_by(UF=seller_state) %>% summarise(Media=round(mean(freight_value),2), Mediana=median(freight_value), `Número de Pedidos`=n()) %>% arrange(Media)
+
+gt(frete_rj) %>%
+tab_header(
+    title = "Resumos de Valores de Frete",
+    subtitle ='De 2016 há 2018'
+  ) %>%
+	fmt_currency(
+    columns = c(Media,Mediana),
+    currency = currency (html = "R$ ",
+      default = "f")
+  ) 
+```
+O Rio de Janeiro, talez por entregar dentro do próprio Estado, é o que possuí em medio o menor valor de frete. Logo em seguida vem São Paulo, que talvez pelo grande volume, tenha o valor de frete diminuído.
+
+## Qual estado mais ganhou vendendo para o Rio de Janeiro?
+
+```{r}
+ganho_rj=pagamento_rj_real %>% group_by(seller_state) %>% summarise(ganho_total=sum(payment_value)) %>% arrange(desc(ganho_total))
+
+ganho_rj %>% ggplot(aes(x=reorder(seller_state,-ganho_total),y=ganho_total)) +
+	geom_col(fill='blue') +
+	labs(x=NULL,y=NULL) +
+	scale_y_continuous(n.breaks = 10, labels=scales::dollar_format(prefix = 'R$ ')) 
+```
+
+São Paulo recebeu um bom dinheiro dos cariocas, os produtores paulistas devem ser muito bons.
+
+## O que aprendemos?
+
+Com essa breve análise aprendemos que apesar da rivalidade, cariocas adoram comprar de paulistas.... E fazer compras no crédito. Além de surpreendente gosta de usar ecommerce para produtos do lar, eu sinceramente achava um número maior para eletrônicos ou roupas.
+
+# Um pouco de Brasil
+
+As análises realizadas focando na Estado do Rio poderiam ser feitas em outros estados ou mesmo no país como um todo. Mas seria repetitivo.
+
+Então irei fazer alguns visualizações rápidas de como era a situação geral da empresa no período disponibilizado.
+
+Você interagir com o mapa :D
+
+```{r}
+# Usando  o geobr para criar mapas do brasil
+estado=read_state()
+```
+
+
+```{r}
+
+dinheiro_gasto= left_join(clientes,compras) %>% left_join(pagamentos)
+
+dinheiro_gasto_total=dinheiro_gasto %>% group_by(abbrev_state=customer_state) %>% summarise(Total=sum(payment_value, na.rm=T)) %>% arrange(desc(Total))
+
+
+dinheiro_gasto_total$categoria = dinheiro_gasto_total$Total %>% discretize(method='interval', breaks= 6, labels =c(' Até 101 Milhoes',' De 101 Milhões até 201 Milhões',' De 201 Milhões até 301 Milhões',' De 301 Milhões até 401 Milhões',' De 401 Milhões até 501 Milhões',' De 501 Milhões até 600 Milhões' ))
+
+estado_gasto=inner_join(estado,dinheiro_gasto_total)
+
+mapa_total_gasto= ggplot() +
+    geom_sf(data=estado_gasto, aes(fill=categoria, group=Total), color='black', size=.15, show.legend = T) +
+    scale_fill_brewer(palette = "YlOrRd") +
+		labs(fill='Total de Gastos', size=10,face= "bold.italic") +
+		ggtitle('Gastos por Estado') +
+		theme(
+    plot.title=element_text(family='Arial', face='bold', colour='black', size=26),
+    legend.title = element_text(face = "bold.italic", size=20),
+    legend.text = element_text(size=15))
+
+
+
+```
+
+São Paulo foi o Estado que mais gastou na plataforma. Ual!
+
+```{r}
+
+vendas <- item %>%
+    left_join(sellers) %>%
+  left_join(produtos)
+
+
+
+
+
+vendedores= vendas %>% group_by(abbrev_state=seller_state) %>% summarise(Total=n()) %>% arrange(desc(Total)) 
+
+estado_vendedores=left_join(estado,vendedores)
+
+estado_vendedores$Total[is.na(estado_vendedores$Total)] = 0
+
+
+
+estado_vendedores$categoria = estado_vendedores$Total %>%
+	                     discretize(method='interval',
+						           breaks= 8,
+						           labels =c('Até 10 Mil',
+						           					'De 10 Mil até 20,01 Mil',
+						           					'De 20,01 Mil  até 30,01 Mil',
+						           					'De 30 Mil até 40 Mil',
+						           					'De 40 Mil até 50 Mil',
+						           					'De 50 Mil até 60 Mil',
+						           					'De 60 Mil até 70 Mil',
+						           					'De 70 Mil até 80 Mil'))
+
+
+
+mapa_vendedores= ggplot() +
+    geom_sf(data=estado_vendedores, aes(fill=categoria, group=Total), color='black', size=.15, show.legend = T) +
+    scale_fill_brewer(palette = "PuBuGn") +
+		labs(fill='Total de Vendores', size=10,face= "bold.italic") +
+		ggtitle('Vendedores Por Estado') +
+		theme(
+    plot.title=element_text(family='Arial', face='bold', colour='black', size=26),
+    legend.title = element_text(face = "bold.italic", size=20),
+    legend.text = element_text(size=15))
+
+
+
+```
+Além de ser o Estado com o maior número de Vendedores. Caraca
+
+## O que aprendemos?
+
+São Paulo é um Estado que merece muita atenção da empresa, tanto pelo seu consumo quanto para a sua produção.
+
+
+### Agradecimentos
+
+Fico Grato a qualquer um que tenha lido. Deixem comentários e feedbacks. Estou aberto sugestão e falhas que tenham sido encontradas.
+
+Até.
